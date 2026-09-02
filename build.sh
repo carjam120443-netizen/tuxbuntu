@@ -15,13 +15,14 @@ command -v lb >/dev/null 2>&1 || {
 }
 
 rm -rf config/binary config/bootstrap config/chroot config/common config/installer config/source config/stages
+rm -f Tuxbuntu-26.04-amd64.iso
 
 lb clean --purge || true
 
 lb config \
   --distribution resolute \
   --architectures amd64 \
-  --archive-areas "main contrib non-free non-free-firmware universe multiverse" \
+  --archive-areas "main restricted universe multiverse" \
   --binary-images iso-hybrid \
   --debian-installer live \
   --debian-installer-gui true \
