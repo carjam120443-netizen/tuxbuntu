@@ -25,6 +25,9 @@ lb clean --purge || true
 
 # live-build 3.0~a57 does not accept --updates/--backports on lb config.
 # Ubuntu's update/security repositories are selected through its Ubuntu mode defaults.
+# Keep firmware auto-discovery disabled: Ubuntu Resolute's Contents index can expose
+# firmware package names that are not actually installable in this live-build setup
+# (notably nouveau-firmware). linux-firmware is explicitly included in our package list.
 lb config \
   --mode ubuntu \
   --distribution resolute \
@@ -37,8 +40,8 @@ lb config \
   --bootappend-live "boot=live components quiet splash" \
   --apt-recommends true \
   --security true \
-  --firmware-binary true \
-  --firmware-chroot true
+  --firmware-binary false \
+  --firmware-chroot false
 
 lb build 2>&1 | tee tuxbuntu-build.log
 
