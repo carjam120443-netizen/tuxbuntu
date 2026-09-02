@@ -17,6 +17,9 @@ command -v lb >/dev/null 2>&1 || {
 rm -rf config/binary config/bootstrap config/chroot config/common config/installer config/source config/stages
 rm -f Tuxbuntu-26.04-amd64.iso
 
+# GitHub's contents API stores scripts as regular files; make live-build hooks executable.
+find config/hooks -type f -name '*.hook.chroot' -exec chmod +x {} +
+
 lb clean --purge || true
 
 lb config \
