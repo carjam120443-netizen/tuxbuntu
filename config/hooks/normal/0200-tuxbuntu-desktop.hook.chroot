@@ -1,9 +1,6 @@
 #!/bin/sh
 set -eu
 
-install -d -m 0755 /usr/share/backgrounds/tuxbuntu
-install -m 0644 assets/tuxbuntu-wallpaper.svg /usr/share/backgrounds/tuxbuntu/tuxbuntu-wallpaper.svg
-
 install -d -m 0755 /etc/dconf/db/local.d
 cat > /etc/dconf/db/local.d/01-tuxbuntu <<'EOF'
 [org/gnome/desktop/background]
