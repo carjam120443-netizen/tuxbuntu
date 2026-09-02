@@ -13,6 +13,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: tuxbuntu-iso-build
+  cancel-in-progress: true
+
 env:
   DEBIAN_FRONTEND: noninteractive
 
@@ -44,6 +48,9 @@ jobs:
             syslinux-common \
             rsync \
             ca-certificates
+
+      - name: Prepare build scripts
+        run: chmod +x build.sh config/hooks/normal/*.hook.chroot
 
       - name: Build ISO
         run: sudo ./build.sh
