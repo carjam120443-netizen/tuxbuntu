@@ -23,19 +23,17 @@ find config/hooks -type f -name '*.hook.chroot' -exec chmod +x {} +
 
 lb clean --purge || true
 
-# live-build 3.0~a57 does not accept --updates/--backports on lb config.
-# Ubuntu's update/security repositories are selected through its Ubuntu mode defaults.
-# Keep firmware auto-discovery disabled: Ubuntu Resolute's Contents index can expose
-# firmware package names that are not actually installable in this live-build setup
-# (notably nouveau-firmware). linux-firmware is explicitly included in our package list.
+# Ubuntu 26.04 (Resolute) live-build configuration.
+# The Debian Installer integration in this live-build setup requests an
+# installer-amd64 path that is not present on the Ubuntu 26.04 archive,
+# so this project builds a pure live ISO without the separate installer payload.
 lb config \
   --mode ubuntu \
   --distribution resolute \
   --architectures amd64 \
   --archive-areas "main restricted universe multiverse" \
   --binary-images iso-hybrid \
-  --debian-installer live \
-  --debian-installer-gui true \
+  --debian-installer false \
   --memtest none \
   --bootappend-live "boot=live components quiet splash" \
   --apt-recommends true \
