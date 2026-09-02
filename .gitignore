@@ -1,0 +1,11 @@
+config/binary/
+config/bootstrap/
+config/chroot/
+config/common/
+config/installer/
+config/source/
+config/stages/
+build/
+*.iso
+*.log
+*.tmp
