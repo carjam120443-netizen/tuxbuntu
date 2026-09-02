@@ -1,0 +1,72 @@
+name: Build Tuxbuntu ISO
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'build.sh'
+      - 'config/**'
+      - 'assets/**'
+      - '.github/workflows/build-iso.yml'
+
+permissions:
+  contents: read
+
+env:
+  DEBIAN_FRONTEND: noninteractive
+
+jobs:
+  build:
+    name: Build Tuxbuntu 26.04 LTS
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Install ISO build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            live-build \
+            debootstrap \
+            ubuntu-keyring \
+            squashfs-tools \
+            xorriso \
+            grub-pc-bin \
+            grub-efi-amd64-bin \
+            grub-efi-amd64-signed \
+            mtools \
+            dosfstools \
+            isolinux \
+            syslinux-common \
+            rsync \
+            ca-certificates
+
+      - name: Build ISO
+        run: sudo ./build.sh
+
+      - name: Verify ISO
+        run: |
+          test -s Tuxbuntu-26.04-amd64.iso
+          ls -lh Tuxbuntu-26.04-amd64.iso
+          file Tuxbuntu-26.04-amd64.iso
+
+      - name: Upload ISO artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Tuxbuntu-26.04-amd64
+          path: Tuxbuntu-26.04-amd64.iso
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Tuxbuntu-build-log
+          path: tuxbuntu-build.log
+          if-no-files-found: ignore
+          retention-days: 14
