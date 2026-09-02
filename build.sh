@@ -23,7 +23,10 @@ find config/hooks -type f -name '*.hook.chroot' -exec chmod +x {} +
 
 lb clean --purge || true
 
+# live-build 3.0~a57 does not accept --updates/--backports on lb config.
+# Ubuntu's update/security repositories are selected through its Ubuntu mode defaults.
 lb config \
+  --mode ubuntu \
   --distribution resolute \
   --architectures amd64 \
   --archive-areas "main restricted universe multiverse" \
@@ -34,8 +37,6 @@ lb config \
   --bootappend-live "boot=live components quiet splash" \
   --apt-recommends true \
   --security true \
-  --updates true \
-  --backports false \
   --firmware-binary true \
   --firmware-chroot true
 
