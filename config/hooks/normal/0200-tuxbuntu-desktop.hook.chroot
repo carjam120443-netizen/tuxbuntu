@@ -1,0 +1,19 @@
+#!/bin/sh
+set -eu
+
+install -d -m 0755 /usr/share/backgrounds/tuxbuntu
+install -m 0644 assets/tuxbuntu-wallpaper.svg /usr/share/backgrounds/tuxbuntu/tuxbuntu-wallpaper.svg
+
+install -d -m 0755 /etc/dconf/db/local.d
+cat > /etc/dconf/db/local.d/01-tuxbuntu <<'EOF'
+[org/gnome/desktop/background]
+picture-uri='file:///usr/share/backgrounds/tuxbuntu/tuxbuntu-wallpaper.svg'
+picture-uri-dark='file:///usr/share/backgrounds/tuxbuntu/tuxbuntu-wallpaper.svg'
+color-shading-type='solid'
+primary-color='#111827'
+secondary-color='#111827'
+EOF
+
+if command -v dconf >/dev/null 2>&1; then
+  dconf update || true
+fi
