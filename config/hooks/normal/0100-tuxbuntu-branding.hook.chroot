@@ -1,0 +1,35 @@
+#!/bin/sh
+set -eu
+
+cat > /etc/os-release <<'EOF'
+NAME="Tuxbuntu"
+PRETTY_NAME="Tuxbuntu 26.04 LTS"
+ID=tuxbuntu
+ID_LIKE=ubuntu
+debian=ubuntu
+VERSION_ID="26.04"
+VERSION="26.04 LTS (Tux)"
+VERSION_CODENAME=resolute
+UBUNTU_CODENAME=resolute
+HOME_URL="https://github.com/carjam120443-netizen/tuxbuntu"
+SUPPORT_URL="https://github.com/carjam120443-netizen/tuxbuntu/issues"
+BUG_REPORT_URL="https://github.com/carjam120443-netizen/tuxbuntu/issues"
+EOF
+
+install -d -m 0755 /etc/profile.d
+cat > /etc/profile.d/tuxbuntu.sh <<'EOF'
+# Tuxbuntu shell defaults
+export TUXBUNTU_VERSION="26.04 LTS"
+EOF
+
+install -d -m 0755 /etc/motd.d
+cat > /etc/motd.d/00-tuxbuntu <<'EOF'
+
+  Tuxbuntu 26.04 LTS 🐧
+  Ubuntu-based desktop Linux built by Tuxbuntu.
+
+EOF
+
+if command -v update-initramfs >/dev/null 2>&1; then
+  update-initramfs -u -k all || true
+fi
